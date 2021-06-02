@@ -1,0 +1,19 @@
+{
+    "params":
+    {
+        "local_server":"True",
+        "local_uri":"mysql://root:@P_mundra321@localhost/local--blog--database",
+        "prod_uri":"mysql://root:@P_mundra321@localhost/local--blog--database",
+        "fb_url":"https://m.facebook.com/prateek.mundra.92",
+        "tw_url":"",
+        "gh_url":"",
+        "blog_name":"Coding Thunder",
+        "gmail_user":"prateekmundra123@gmail.com",
+        "gmail_password":"@P_mundra321",
+        "about_text":"Hey! this is Prateek. I'm a software engineer.",
+        "number_of_posts":2,
+        "admin_user":"prateek_mundra",
+        "admin_password":"@P_mundra321",
+        "upload_location":"/home/prateek/Desktop/Folder/blog/static/img/"
+    }
+}
