@@ -1,4 +1,4 @@
-from flask import Flask, render_template,  session, redirect
+from flask import Flask, render_template,  session, redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask import request
 from datetime import datetime
@@ -16,6 +16,8 @@ local_server=True
 app = Flask(__name__)
 app.secret_key='secret-to-everyone'
 app.config['UPLOAD_FILE']=params['upload_location']
+# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = { 'png', 'jpg', 'jpeg'}
 app.config.update(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = '465',
@@ -152,13 +154,27 @@ def contact():
         )
     return render_template('contact.html',params=params)
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route("/uploader", methods=['GET','POST'])
 def uploader():
     if ('user' in session and session['user'] == params['admin_user']):
         if request.method=='POST':
-            f=request.files['file1']
-            f.save(os.path.join(app.config['UPLOAD_FILE'],secure_filename(f.filename)))
-            return "Uploaded Successfully"
+            if 'file' not in request.files:
+                flash('No file available')
+                return redirect(request.url)
+            file=request.files['file']
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                file.save(os.path.join(app.config['UPLOAD_FILE'],secure_filename(file.filename)))
+                return "File Uploaded Successfully"
+            return "You cannot upload this. Make sure you're using a supported file type."
     
 @app.route("/logout")
 def logout():
