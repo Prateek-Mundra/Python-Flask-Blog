@@ -101,6 +101,7 @@ def dashboard():
         if (username==params['admin_user'] and userpass == params['admin_password']):
             #set the session variable
             session['user'] = username
+            session.permanent = True  # Use cookie to store session.
             posts = Posts.query.all()
             return render_template('dashboard.html',params=params, posts=posts)
     else:
@@ -133,7 +134,7 @@ def edit(sno):
                 post.author=author
                 post.date=date
                 db.session.commit()
-                return redirect('/edit/'+sno)
+                return redirect('/dashboard')
         post=Posts.query.filter_by(sno=sno).first()
         return render_template('edit.html',params=params, post=post, sno=sno)
 
