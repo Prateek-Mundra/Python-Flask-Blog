@@ -25,7 +25,6 @@
 
         <form name="sentMessage" id="contactForm" action='/edit/{{sno}}' method='post'novalidate>
 
-
           <div class="control-group">
             <div class="form-group floating-label-form-group controls">
               <label>Title</label>
@@ -64,12 +63,28 @@
 
            <div class="control-group">
             <div class="form-group floating-label-form-group controls">
-              <label>Image File</label>
-              <input class="form-control" name='img_file' placeholder="Image File" id="img_file" value="{{post.img_file}}">
+              <label>Background Image</label>
+              <input class="form-control" name='img_file' placeholder="Background Image" id="img_file" value="{{post.img_file}}">
               <p class="help-block text-danger"></p>
             </div>
           </div>
 
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Paragraph Image</label>
+              <input class="form-control" name='img_file2' placeholder="Paragraph Image middle" id="img_file2" value="{{post.img_file2}}">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+
+
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Paragraph Image</label>
+              <input class="form-control" name='img_file3' placeholder="Paragraph Image last" id="img_file3" value="{{post.img_file3}}">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
 
            <div class="control-group">
             <div class="form-group floating-label-form-group controls">
