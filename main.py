@@ -1,4 +1,4 @@
-from flask import Flask, render_template,  session, redirect,url_for
+from flask import Flask, render_template,  session, redirect,url_for, Response, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask import request
 from datetime import datetime
@@ -46,12 +46,14 @@ class Contacts(db.Model):
 class Posts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=False, nullable=False)
-    slug = db.Column(db.String(21),  nullable=False)
+    slug = db.Column(db.String(200),  nullable=False)
     content = db.Column(db.String(120),  nullable=False)
     tagline = db.Column(db.String(120),  nullable=False)
     author = db.Column(db.String(20),  nullable=False)
     date = db.Column(db.String(20),  nullable=True)
-    img_file = db.Column(db.String(20),  nullable=True)
+    img_file = db.Column(db.String(50),  nullable=True)
+    img_file2 = db.Column(db.String(20),  nullable=True)
+    img_file3= db.Column(db.String(20),  nullable=True)
 
 
 @app.route("/")
@@ -105,6 +107,7 @@ def dashboard():
             posts = Posts.query.all()
             return render_template('dashboard.html',params=params, posts=posts)
     else:
+        # flash('You are now logged out.', 'success')
         return render_template('login.html',params=params)
     
 @app.route("/edit/<string:sno>", methods=['GET','POST'])
@@ -116,11 +119,13 @@ def edit(sno):
             slug = request.form.get('slug')
             content=request.form.get('content')
             img_file = request.form.get('img_file')
+            img_file2 = request.form.get('img_file2')
+            img_file3 = request.form.get('img_file3')
             author = request.form.get('author')
             date=datetime.now()
         
             if sno=='0':
-                post=Posts(title=box_title, tagline=tline, slug=slug, content=content, img_file=img_file, date=date,author=author)
+                post=Posts(title=box_title, tagline=tline, slug=slug, content=content, img_file=img_file, img_file2=img_file2,img_file3=img_file3,date=date,author=author)
                 db.session.add(post)
                 db.session.commit()
             
@@ -131,6 +136,8 @@ def edit(sno):
                 post.slug=slug
                 post.content=content
                 post.img_file=img_file
+                post.img_file2=img_file2
+                post.img_file3=img_file3
                 post.author=author
                 post.date=date
                 db.session.commit()
@@ -166,11 +173,9 @@ def uploader():
     if ('user' in session and session['user'] == params['admin_user']):
         if request.method=='POST':
             if 'file' not in request.files:
-                flash('No file available')
                 return redirect(request.url)
             file=request.files['file']
             if file.filename == '':
-                flash('No selected file')
                 return redirect(request.url)
             if file and allowed_file(file.filename):
                 file.save(os.path.join(app.config['UPLOAD_FILE'],secure_filename(file.filename)))
@@ -189,6 +194,11 @@ def delete(sno):
         db.session.delete(post)
         db.session.commit()
     return redirect('/dashboard')
+
+@app.errorhandler(404)
+def not_found(exc):
+    return Response('<h1>This URL is not found. Please check the URL.</h1>'), 404
+
 
 # @app.route("/post")
 # def sample():

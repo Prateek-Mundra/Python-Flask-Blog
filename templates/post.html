@@ -4,6 +4,8 @@
 
   <!-- Page Header -->
   {% set fname = 'img/' + post.img_file %}
+  {% set fname2 = 'img/' + post.img_file2 %}
+  {% set fname3 = 'img/' + post.img_file3 %}
   <header class="masthead" style="background-image: url(' {{ url_for('static',filename=fname)}}'">
     <div class="overlay"></div>
     <div class="container">
@@ -26,8 +28,14 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-         {{post.content}}
-
+          <p style="font-style: italic;">{{post.content[0:480]}}</p>
+         
+          <p>{{post.content[480:960]}}</p>
+          <img src="{{url_for('static', filename=fname2)}}" , width=650, quality= 95 ,alt="previous"/>
+          <p>{{post.content[960:1500]}}</p>
+          
+          <img src="{{url_for('static', filename=fname3)}}",onerror="this.onerror=null;this.src='http://example.com/existent-image.jpg';", width=650, quality=95 ,alt="previous" />
+          <p>{{post.content[1500:]}}</p>
           <!-- <p>Placeholder text by
             <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by
             <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.</p> -->
